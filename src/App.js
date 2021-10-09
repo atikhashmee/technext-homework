@@ -1,14 +1,38 @@
-import React from 'react';
+/* eslint-disable react/no-array-index-key */
+import React, { useEffect, useState } from 'react';
 import './App.css';
+import { useSelector, useDispatch } from 'react-redux';
+import { rocketSync, selectLuncher } from './features/rocketLuanch/rocketLuanchSlice';
 
 function App() {
+  const lunchers = useSelector(selectLuncher);
+  const [lunchersData, setLuncherData] = useState([]);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(rocketSync());
+  }, []);
+
+  useEffect(() => {
+    setLuncherData(lunchers.items);
+  }, [lunchers]);
+
+  useEffect(() => {
+  }, [lunchersData]);
+
   return (
     <div className="container">
       <div className="row mb-3 mt-5">
         <div className="col-md-6">
           <div className="d-flex">
-            <button type="button" className="btn btn-outline-dark me-2">Success</button>
-            <button type="button" className="btn btn-outline-dark me-2">Failed</button>
+            <div className="dropdown me-2">
+              <button className="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+                Status
+              </button>
+              <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                <li><a className="dropdown-item" href="void(0)">Success</a></li>
+                <li><a className="dropdown-item" href="void(0)">Failed</a></li>
+              </ul>
+            </div>
             <div className="dropdown me-2">
               <button className="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
                 Launch Date
@@ -34,8 +58,8 @@ function App() {
       <div className="card">
         <div className="card-body">
           <div className="row">
-            {Array(27).fill(0).map((ke, ind, res) => (
-              <div className="col-md-4">
+            {lunchersData.map((item, inde) => (
+              <div className="col-md-4" key={inde}>
                 <div className="card mb-2">
                   <div className="card-body">
                     <h5 className="card-title">Card title</h5>
