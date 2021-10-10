@@ -44,6 +44,7 @@ function App() {
         last_year: '',
       },
       upcoming: false,
+      searchTxt: '',
     });
     setDateTimeFilter('');
     dispatch(rocketSync());
@@ -80,7 +81,7 @@ function App() {
   return (
     <div className="container">
       <div className="row mb-3 mt-5">
-        <div className="col-md-8">
+        <div className="col-md-12">
           <div className="d-flex">
             <div className="dropdown me-2">
               <button className="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
@@ -102,18 +103,9 @@ function App() {
               </ul>
             </div>
             <button type="button" onClick={() => { setFilters({ ...filters, upcoming: !filters.upcoming }); }} className={`btn ${filters.upcoming ? 'btn-dark' : 'btn-outline-dark'} me-2`}>Is it Upcoming?</button>
-            <div className="d-flex">
-              <button type="button" onClick={() => { resetFilter(); }} className="btn btn-warning me-2">Reset</button>
-              <button type="button" onClick={() => { filterAPiData(); }} className="btn btn-primary">
-                <i className="fa fa-filter">Filter</i>
-              </button>
-            </div>
-          </div>
-        </div>
-        <div className="col-md-4">
-          <div className="d-flex">
-            <input type="search" className="form-control" placeholder="Rocket Name" />
-            <button type="button" className="btn btn-success">
+            <input type="search" className="form-control w-50" placeholder="Rocket Name" onChange={(evt) => { setFilters({ ...filters, searchTxt: evt.currentTarget.value }); }} />
+            <button type="button" onClick={() => { resetFilter(); }} className="btn btn-warning me-2">Reset</button>
+            <button type="button" onClick={() => { filterAPiData(); }} className="btn btn-success">
               <i className="fa fa-search">Search</i>
             </button>
           </div>
@@ -121,6 +113,7 @@ function App() {
       </div>
       <div className="card">
         <div className="card-body">
+          {lunchersData.length > 0 && (
           <div className="row">
             {lunchersData.map((item, inde) => (
               <div className="col-md-4" key={inde}>
@@ -129,17 +122,44 @@ function App() {
                     <img src={item.links.mission_patch_small} className="card-img-top" alt="..." />
                   </div>
                   <div className="card-body">
-                    <h5 className="card-title">
-                      {item.mission_name}
-                      {item.launch_success ? <span className="badge bg-success">Success</span> : <span className="badge bg-danger">Failed</span>}
-                    </h5>
-                    <p className={`card-text ${styles.cardTextFit}`}>{item.details}</p>
-                    <a href={item?.links?.article_link?.wikipedia} className="btn btn-link">Read More</a>
+                    <div className="card-title">
+                      <table className={styles.customTable}>
+                        <tbody>
+                          <tr>
+                            <th>Mission :</th>
+                            <td>{item.mission_name}</td>
+                          </tr>
+                          <tr>
+                            <th>Status :</th>
+                            <td>{item.launch_success ? <span className="badge bg-success">Success</span> : <span className="badge bg-danger">Failed</span>}</td>
+                          </tr>
+                          <tr>
+                            <th>Rocket Name :</th>
+                            <td>{item.rocket.rocket_name}</td>
+                          </tr>
+                          <tr>
+                            <th>Detail :</th>
+                            <td>
+                              <p className={`card-text ${styles.cardTextFit}`}>
+                                {item.details}
+                              </p>
+                              <a href={item.links.wikipedia} className="btn btn-link">Read More</a>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                 </div>
               </div>
             ))}
           </div>
+          )}
+          {lunchersData.length === 0 && (
+          <div className="d-flex justify-content-center align-items-center">
+            <h3> Nothing Found</h3>
+          </div>
+          )}
         </div>
       </div>
 

@@ -14,6 +14,7 @@ const initialState = {
       last_year: '',
     },
     upcoming: false,
+    searchTxt: '',
   },
 };
 
@@ -63,6 +64,14 @@ export const rocketSlice = createSlice({
         state.items = state.items.filter((item) => item.upcoming === true);
       } else {
         state.items = state.items.filter((item) => item.upcoming === false);
+      }
+
+      if (state.filters.searchTxt !== '') {
+        const regex = new RegExp(state.filters.searchTxt, 'gi');
+        state.items = state.items.filter((item) => {
+          const rocketName = item.rocket.rocket_name || '';
+          return rocketName.match(regex) !== null ? rocketName.length > 0 : false;
+        });
       }
     },
   },

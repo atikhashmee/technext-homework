@@ -12,5 +12,16 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 75ch;
+    max-width: 30ch;
+}
+.customTable {
+    width: 100%;
+    border: 1px solid #c1c1c194;
+    border-collapse: collapse;
+    padding: 5px;
+}
+.customTable tr td, .customTable tr th {
+    border: 1px solid #c1c1c194;
+    border-collapse: collapse;
+    padding: 5px;
 }
