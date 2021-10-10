@@ -1,8 +1,4 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
-/* eslint-disable no-void */
-/* eslint-disable react/no-array-index-key */
 import React, { useEffect, useState } from 'react';
-import './App.css';
 import { useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
 import { rocketSync, selectLuncher, filterData } from './features/rocketLuanch/rocketLuanchSlice';
@@ -88,8 +84,8 @@ function App() {
                 {filters.status !== '' ? filters.status : 'Status'}
               </button>
               <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                <li><a className="dropdown-item" href={void (0)} onClick={() => { setFilters({ ...filters, status: 'success' }); }}>Success</a></li>
-                <li><a className="dropdown-item" href={void (0)} onClick={() => { setFilters({ ...filters, status: 'failed' }); }}>Failed</a></li>
+                <li><button type="button" className="dropdown-item" onClick={() => { setFilters({ ...filters, status: 'success' }); }}>Success</button></li>
+                <li><button type="button" className="dropdown-item" onClick={() => { setFilters({ ...filters, status: 'failed' }); }}>Failed</button></li>
               </ul>
             </div>
             <div className="dropdown me-2">
@@ -97,9 +93,9 @@ function App() {
                 {dateTimeFilter !== '' ? dateTimeFilter : 'Launch Date'}
               </button>
               <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                <li><a className="dropdown-item" href={void (0)} onClick={() => { dateTimeFilterFun('week'); }}>Last Week</a></li>
-                <li><a className="dropdown-item" href={void (0)} onClick={() => { dateTimeFilterFun('month'); }}>Last Month</a></li>
-                <li><a className="dropdown-item" href={void (0)} onClick={() => { dateTimeFilterFun('year'); }}>Last Year</a></li>
+                <li><button className="dropdown-item" type="button" onClick={() => { dateTimeFilterFun('week'); }}>Last Week</button></li>
+                <li><button className="dropdown-item" type="button" onClick={() => { dateTimeFilterFun('month'); }}>Last Month</button></li>
+                <li><button className="dropdown-item" type="button" onClick={() => { dateTimeFilterFun('year'); }}>Last Year</button></li>
               </ul>
             </div>
             <button type="button" onClick={() => { setFilters({ ...filters, upcoming: !filters.upcoming }); }} className={`btn ${filters.upcoming ? 'btn-dark' : 'btn-outline-dark'} me-2`}>Is it Upcoming?</button>
@@ -116,7 +112,7 @@ function App() {
           {lunchersData.length > 0 && (
           <div className="row">
             {lunchersData.map((item, inde) => (
-              <div className="col-md-4" key={inde}>
+              <div className="col-md-4" key={item.flight_number + item.rocket.rocket_id}>
                 <div className="card mb-2">
                   <div className={styles.cardImg}>
                     <img src={item.links.mission_patch_small} className="card-img-top" alt="..." />
