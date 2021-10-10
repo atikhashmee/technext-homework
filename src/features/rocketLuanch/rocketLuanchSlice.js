@@ -8,7 +8,11 @@ const initialState = {
   originalItems: [],
   filters: {
     status: '',
-    time: '',
+    time: {
+      last_week: '',
+      last_month: '',
+      last_year: '',
+    },
     upcoming: false,
   },
 };
@@ -41,6 +45,24 @@ export const rocketSlice = createSlice({
 
       if (state.filters.status !== '' && state.filters.status === 'failed') {
         state.items = state.items.filter((item) => item.launch_success === false);
+      }
+
+      if (state.filters.time.last_week !== '') {
+        state.items = state.items.filter((item) => item.launch_date_unix >= state.filters.time.last_week.split(',')[0] && item.launch_date_unix <= state.filters.time.last_week.split(',')[1]);
+      }
+
+      if (state.filters.time.last_month !== '') {
+        state.items = state.items.filter((item) => item.launch_date_unix >= state.filters.time.last_month.split(',')[0] && item.launch_date_unix <= state.filters.time.last_month.split(',')[1]);
+      }
+
+      if (state.filters.time.last_year !== '') {
+        state.items = state.items.filter((item) => item.launch_date_unix >= state.filters.time.last_year.split(',')[0] && item.launch_date_unix <= state.filters.time.last_year.split(',')[1]);
+      }
+
+      if (state.filters.upcoming === true) {
+        state.items = state.items.filter((item) => item.upcoming === true);
+      } else {
+        state.items = state.items.filter((item) => item.upcoming === false);
       }
     },
   },
